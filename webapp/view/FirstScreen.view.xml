@@ -1,0 +1,685 @@
+<mvc:View controllerName="zsalesprint.controller.FirstScreen"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:F="sap.ui.layout.form" xmlns:C="sap.ui.core" xmlns:Tab="sap.ui.table"  xmlns:ui="sap.ui.unified">
+    <NavContainer navigationFinished="onNavigationFinished" id="idNavContainer" width="100%" height="100%" class="navContainerControl sapUiSmallMarginBottom">
+        <Page id="idHomePage" titleAlignment="Center" title="Sales Print" >
+            <content>
+                <F:SimpleForm title="{i18n>title}" id="idFirstSimpleForm" layout="ResponsiveGridLayout" columnsL="3" columnsXL="3" columnsM="2" editable="true">
+                    <F:content>
+                        <Label design="Bold" id="idSalesOrgnisationLabel" text="Sales Orgnisation" />
+                        <ComboBox width="50%" items="{path:'/SalesOrganisation'}" change="onSalesOrgnisationComboBoxChange" showSecondaryValues="true" id="idSalesOrgnisationComboBox" >
+                            <items>
+                                <C:ListItem id="idSalesOrgnisationComboBoxListItem" text="{SalesOrganization}" additionalText="{SalesOrganizationName}"></C:ListItem>
+                            </items>
+                        </ComboBox>
+
+                        
+                        <Label required="true" design="Bold" id="idStorageLocationLabel" text="Storage Location" />
+                        <MultiComboBox visible="false" width="50%"  items="{path:'/StorageLocation',filters: [{ path: 'Plant', operator: 'EQ', value1: '1100' }]}" showSecondaryValues="true" id="idStorageLocationComboBox" >
+                            <items>
+                                <C:ListItem id="idStorageLocationListItem" text="{StorageLocation}" additionalText="{StorageLocationName}"></C:ListItem>
+                            </items>
+                        </MultiComboBox>
+                        <C:Title id="id1Title"/>
+                    </F:content>
+                </F:SimpleForm>
+            </content>
+            <footer>
+                <Bar id="idBar">
+                    <contentRight>
+                        <Button id="idButton" icon="sap-icon://open-command-field" type="Emphasized" text="Next" press="onNextButtonPress"/>
+                    </contentRight>
+                </Bar>
+            </footer>
+        </Page>
+        <Page id="idSecondPage" titleAlignment="Center" >
+            <content>
+                <F:SimpleForm  id="idSecondPageFirstSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <RadioButtonGroup select="onRadioButtonGroupSelect" id="id1100RadioButtonGroup">
+                            <RadioButton id="id1100SaleOrderPrintRadioButton" text="Sale Order Print"></RadioButton>
+                            <RadioButton id="id1100DeliveryPrintRadioButton" text="Delivery Print"></RadioButton>
+                            <RadioButton id="id1100BillingDocumentPrintRadioButton" text="Billing Document Print"></RadioButton>
+                            <RadioButton id="id1100BOXStickerPrintRadioButton" text="BOX Sticker Print"></RadioButton>
+                            <RadioButton id="id1100IntraBillingDocumentPrintRadioButton" text="Intra Billing Document Print"></RadioButton>
+                            <RadioButton id="id1100SalesReturnPrintRadioButton" text="Sales Return Print"></RadioButton>
+                        </RadioButtonGroup>
+                        <C:Title id="idSecondPages1Title"/>
+                    </F:content>
+                </F:SimpleForm>
+                <F:SimpleForm  id="idSecondPageSecondSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <RadioButtonGroup select="onRadioButtonGroupSelect" id="id1200RadioButtonGroup">
+                            <RadioButton id="id1200BillingDocumentPrintRadioButton" text="Billing Document Print"></RadioButton>
+                        </RadioButtonGroup>
+                        <C:Title id="idSecondPages2Title"/>                        
+                    </F:content>
+                </F:SimpleForm>
+            </content>
+            <footer>
+                <Bar id="idSecondPagesBar">
+                    <contentRight>
+                        <Button id="idBackPagesButton" icon="sap-icon://media-rewind" type="Emphasized" text="Back" press="onBackButtonPress"/>
+                        <Button id="idNext2Button" icon="sap-icon://open-command-field" type="Emphasized" text="Next" press="onNextThirdButtonPress"/>
+                    </contentRight>
+                </Bar>
+            </footer>
+        </Page>
+        <Page id="idThirdPage" titleAlignment="Center" >
+            <content>
+                <F:SimpleForm  id="idThirdPageFirstSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <Label id="idPrintTypeSalesOrderLabel" text="Print Type"></Label>
+                        <RadioButtonGroup select="on1100SaleOrderFormsRadioButtonGroupSelect" columns="3" id="id1100SaleOrderFormsRadioButtonGroup">
+                            <RadioButton id="id1100SaleOrderFormsMultipleRadioButton" text="Multiple"></RadioButton>
+                            <RadioButton id="id1100SaleOrderFormsFromToRadioButton" text="From - TO"></RadioButton>
+                        </RadioButtonGroup>
+                        <Label visible="false" id="idSalesOrderLabel" text="Sales Order No."></Label>
+                        <Input visible="false" showValueHelp="true" valueHelpRequest="onSOvalueHelpRequest" placeholder="From Sales Order" id="idFromSalesOrderInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idFromSaleOrderInputsCustomData" key="FromSaleOrder" />
+                            </customData>
+                        </Input>
+                        <Input visible="false" placeholder="To Sales Order" valueHelpRequest="onSOvalueHelpRequest" showValueHelp="true" id="idTOSalesOrderInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idTOSaleOrderInputsCustomData" key="TOSaleOrder" />
+                            </customData>
+                        </Input>
+                        <Label id="idSalesOrderMultiLabel"  text="Sales Order No."></Label>
+                        <MultiInput valueHelpRequest="onSOvalueHelpRequest" placeholder="Enter Sales Order" id="idSalesOrderMultiInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idSalesOrderMultiInputsCustomData" key="SalesOrderMultiInput" />
+                            </customData>
+                        </MultiInput>
+                        <Label visible="false" id="idSalesOrderDateLabel" text="Sales Order Date"></Label>
+                        <DatePicker visible="false" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="From Sales Order Date" id="idFromSalesOrderDatePicker"></DatePicker>
+                        <DatePicker visible="false" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="To Sales Order Date" id="idTOSalesOrderDatePicker"></DatePicker>
+                        <C:Title id="idThirdPages1Title"/>                        
+                    </F:content>
+                </F:SimpleForm>
+                <F:SimpleForm  id="idThirdPageSecondSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <Label id="idPrintTypeDeliveryNumberLabel" text="Print Type"></Label>
+                        <RadioButtonGroup select="on1100DeliveryNumberFormsRadioButtonGroupSelect" columns="3" id="id1100DeliveryNumberFormsRadioButtonGroup">
+                            <RadioButton id="id1100DeliveryNumberFormsMultipleRadioButton" text="Multiple"></RadioButton>
+                            <RadioButton id="id1100DeliveryNumberFormsFromToRadioButton" text="From - TO"></RadioButton>
+                        </RadioButtonGroup>
+                        <Label visible="false" id="idDeliveryNumberLabel" text="Delivery No."></Label>
+                        <Input visible="false" showValueHelp="true" valueHelpRequest="onDeliveryValueHelpRequest" placeholder="From Delivery" id="idFromDeliveryNumberInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idFromDeliveryNumberInputsCustomData" key="FromDeliveryNumber" />
+                            </customData>
+                        </Input>
+                        <Input visible="false" placeholder="To Delivery" valueHelpRequest="onDeliveryValueHelpRequest" showValueHelp="true" id="idTODeliveryNumberInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idTODeliveryNumberInputsCustomData" key="TODeliveryNumber" />
+                            </customData>
+                        </Input>
+                        <Label id="idDeliveryNumberMultiLabel" text="Delivery No."></Label>
+                        <MultiInput valueHelpRequest="onDeliveryValueHelpRequest" placeholder="Enter Delivery" id="idDeliveryNumberMultiInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idDeliveryNumberMultiInputsCustomData" key="DeliveryMultiInput" />
+                            </customData>
+                        </MultiInput>
+                        <Label visible="false"  id="idDeliveryDateLabel" text="Delivery Date"></Label>
+                        <DatePicker visible="false" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="From Delivery Date" id="idFromDeliveryDatePicker"></DatePicker>
+                        <DatePicker visible="false" displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="To Delivery Date" id="idTODeliveryDatePicker"></DatePicker>
+                        
+                        <Label visible="false" id="idDeliveryCustomerCodeLabel" text="Customer Code"></Label>
+                        <Input valueHelpOnly="true"  showClearIcon="true" visible="false" width="50%" showValueHelp="true" valueHelpRequest="onDeliveryCustomerCodeValueHelpRequest" id="idDeliveryCustomerCodeInput" />
+                        <Label visible="false" id="idDeliveryHasteLabel" text="Haste"></Label>
+                        <Input valueHelpOnly="true"  showClearIcon="true" visible="false" width="50%" showValueHelp="true" valueHelpRequest="onDeliveryHasteValueHelpRequest" id="idDeliveryHasteInput" />
+                        <Label visible="false" id="idDeliveryExternalAgentLabel" text="External Agent"></Label>
+                        <Input valueHelpOnly="true"  showClearIcon="true" visible="false" width="50%" showValueHelp="true" valueHelpRequest="onDeliveryExternalAgentValueHelpRequest" id="idDeliveryExternalAgentInput" />
+                        <C:Title id="idThirdPages2Title"/>                        
+                    </F:content>
+                </F:SimpleForm>
+                <F:SimpleForm  id="idThirdPageThirdSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <Label id="idPrintTypeBillingDocumentLabel" text="Print Type"></Label>
+                        <RadioButtonGroup select="on1100BillingDocumentFormsRadioButtonGroupSelect" columns="3" id="id1100BillingDocumentFormsRadioButtonGroup">
+                            <RadioButton id="id1100BillingDocumentFormsMultipleRadioButton" text="Multiple"></RadioButton>
+                            <RadioButton id="id1100BillingDocumentFormsFromToRadioButton" text="From - TO"></RadioButton>
+                        </RadioButtonGroup>
+                        <Label visible="false" id="idBillingDocumentLabel" text="Billing Document No."></Label>
+                        <Input visible="false" showValueHelp="true" valueHelpRequest="onBillingDocumentValueHelpRequest" placeholder="From Billing Document" id="idFromBillingDocumentInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idFromBillingDocumentInputsCustomData" key="FromBillingDocument" />
+                            </customData>
+                        </Input>
+                        <Input visible="false" placeholder="To Billing Document" valueHelpRequest="onBillingDocumentValueHelpRequest" showValueHelp="true" id="idTOBillingDocumentInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idTOBillingDocumentInputsCustomData" key="TOBillingDocument" />
+                            </customData>
+                        </Input>
+                        <Label id="idBillingDocumentMultiLabel" text="Billing Document No."></Label>
+                        <MultiInput valueHelpRequest="onBillingDocumentValueHelpRequest" placeholder="Enter Billing Document" id="idBillingDocumentMultiInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idBillingDocumentMultiInputsCustomData" key="BillingDocumentMultiInput" />
+                            </customData>
+                        </MultiInput>
+                        <Label visible="false"  id="idBillingDocumentDateLabel" text="Billing Document Date"></Label>
+                        <DatePicker visible="false"  displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="From Billing Document Date" id="idFromBillingDocumentDatePicker"></DatePicker>
+                        <DatePicker visible="false"  displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="To Billing Document Date" id="idTOBillingDocumentDatePicker"></DatePicker>
+                        
+                        
+                        <Label visible="false" id="idBillingDocumentCustomerCodeLabel" text="Billing Document Customer Code"></Label>
+                        <Input valueHelpOnly="true"  showClearIcon="true" visible="false" showValueHelp="true" valueHelpRequest="onBillingDocumentCustomerCodeValueHelpRequest" width="50%" id="idBillingDocumentCustomerCodeInput" />
+                        <Label visible="false" id="idBillingDocumentHasteLabel" text="Billing Document Haste"></Label>
+                        <Input valueHelpOnly="true"  showClearIcon="true" visible="false" showValueHelp="true" valueHelpRequest="onBillingDocumentHasteValueHelpRequest" width="50%" id="idBillingDocumentHasteInput" />
+                        <Label visible="false" id="idBillingDocumentExternalAgentLabel" text="Billing Document External Agent"></Label>
+                        <Input valueHelpOnly="true"  showClearIcon="true" visible="false" showValueHelp="true" valueHelpRequest="onBillingDocumentExternalAgenValueHelpRequest" width="50%" id="idBillingDocumentExternalAgentInput" />
+                        <Label visible="false" id="id1100sSecondRadioButtonGroup"/>
+                        <RadioButtonGroup visible="false" columns="6" id="id1100sRadioButtonGroup">
+                            <RadioButton id="id1100BillingDocumentFormsOriginalRadioButton" text="Original"></RadioButton>
+                            <RadioButton id="id1100BillingDocumentFormsOfficeCopyRadioButton" text="Office Copy"></RadioButton>
+                            <RadioButton id="id1100BillingDocumentFormsTransporterCopyRadioButton" text="Transporter Copy"></RadioButton>
+                            <RadioButton id="id1100BillingDocumentExtraCopyFormsRadioButton" text="Extra Copy"></RadioButton>
+                        </RadioButtonGroup>
+                        
+                        <Label id="idBillingDocumentPrintTypeLabel" text="Select Print Type"></Label>
+                        <CheckBox id="idBillingDocumentOriginalCheckBox" text="Original" />
+                        <CheckBox id="idBillingDocumentOfficeCopyCheckBox" text="Office Copy" />
+                        <CheckBox id="idBillingDocumentTransporterCopyCheckBox" text="Transporter Copy" />
+                        <CheckBox id="idBillingDocumentExtraCopyCheckBox" text="Extra Copy" />             
+                        <C:Title id="idThirdPages3Title"/>                        
+                    </F:content>
+                </F:SimpleForm>
+                <F:SimpleForm  id="idThirdPageForthSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <Label id="idPrintTypeSalesReturnBillingDocumentLabel" text="Print Type"></Label>
+                        <RadioButtonGroup select="on1100SalesReturnBillingDocumentFormsRadioButtonGroupSelect" columns="3" id="id1100SalesReturnBillingDocumentFormsRadioButtonGroup">
+                            <RadioButton id="id1100SalesReturnBillingDocumentFormsMultipleRadioButton" text="Multiple"></RadioButton>
+                            <RadioButton id="id1100SalesReturnBillingDocumentFormsFromToRadioButton" text="From - TO"></RadioButton>
+                        </RadioButtonGroup>
+                        <Label visible="false" id="idSalesReturnBillingDocumentLabel" text="Billing Document No."></Label>
+                        <Input visible="false" showValueHelp="true" valueHelpRequest="onSalesReturnBillingDocumentValueHelpRequest" placeholder="From Billing Document" id="idFromSalesReturnBillingDocumentInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idFromSalesReturnSalesReturnBillingDocumentInputsCustomData" key="FromSalesReturnBillingDocument" />
+                            </customData>
+                        </Input>
+                        <Input visible="false" placeholder="To Billing Document" valueHelpRequest="onSalesReturnBillingDocumentValueHelpRequest" showValueHelp="true" id="idTOSalesReturnBillingDocumentInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idTOSalesReturnBillingDocumentInputsCustomData" key="TOSalesReturnBillingDocument" />
+                            </customData>
+                        </Input>
+                        <Label id="idSalesReturnBillingDocumentMultiLabel" text="Billing Document No."></Label>
+                        <MultiInput width="50%" valueHelpRequest="onSalesReturnBillingDocumentValueHelpRequest" placeholder="Enter Billing Document" id="idSalesReturnBillingDocumentMultiInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="idSalesReturnBillingDocumentMultiInputsCustomData" key="SalesReturnBillingDocumentMultiInput" />
+                            </customData>
+                        </MultiInput>
+                        <Label id="idSalesReturnBillingDocumentDateLabel" text="Billing Document Date"></Label>
+                        <DatePicker displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="From Billing Document Date" id="idFromSalesReturnBillingDocumentDatePicker"></DatePicker>
+                        <DatePicker displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="To Billing Document Date" id="idTOSalesReturnBillingDocumentDatePicker"></DatePicker>
+                        
+                        
+                        <Label id="idSalesReturnBillingDocumentCustomerCodeLabel" text="Billing Document Customer Code"></Label>
+                        <Input showClearIcon="true" visible="false" showValueHelp="true" valueHelpRequest="onSalesReturnBillingDocumentCustomerCodeValueHelpRequest" 
+                        width="50%" id="idSalesReturnBillingDocumentCustomerCodeInput" />
+                        <Label id="idSalesReturnBillingDocumentHasteLabel" text="Billing Document Haste"></Label>
+                        <Input showClearIcon="true" visible="false" showValueHelp="true" valueHelpRequest="onSalesReturnBillingDocumentHasteValueHelpRequest" 
+                        width="50%" id="idSalesReturnBillingDocumentHasteInput" />
+                        <Label id="idSalesReturnBillingDocumentExternalAgentLabel" text="Billing Document External Agent"></Label>
+                        <Input showClearIcon="true" visible="false" showValueHelp="true" valueHelpRequest="onSalesReturnBillingDocumentExternalAgenValueHelpRequest" 
+                        width="50%" id="idSalesReturnBillingDocumentExternalAgentInput" />
+                        
+                        
+                        <Label visible="false" id="id1100SalesReturnsSecondRadioButtonGroup"/>                     
+                        <RadioButtonGroup visible="false" columns="6" id="id1100SalesReturnsRadioButtonGroup">
+                            <RadioButton id="id1100SalesReturnBillingDocumentFormsOriginalRadioButton" text="Original"></RadioButton>
+                            <RadioButton id="id1100SalesReturnBillingDocumentFormsOfficeCopyRadioButton" text="Office Copy"></RadioButton>
+                            <RadioButton id="id1100SalesReturnBillingDocumentFormsTransporterCopyRadioButton" text="Transporter Copy"></RadioButton>
+                            <RadioButton id="id1100SalesReturnBillingDocumentExtraCopyFormsRadioButton" text="Extra Copy"></RadioButton>
+                        </RadioButtonGroup>
+
+                        <Label id="idSalesReturnLabel" text="Select Print"></Label>
+                        <CheckBox id="idSalesReturnOriginalCheckBox" text="Original" />
+                        <CheckBox id="idSalesReturnOfficeCopyCheckBox" text="Office Copy" />
+                        <CheckBox id="idSalesReturnTransporterCopyCheckBox" text="Transporter Copy" />
+                        <CheckBox id="idSalesReturnExtraCopyCheckBox" text="Extra Copy" />
+                                         
+                        <C:Title id="idThirdPages4Title"/>                        
+                    </F:content>
+                </F:SimpleForm>
+
+                <!-- 1200 Sales Organisation  -->
+                <F:SimpleForm  id="idThirdPageFifthSimpleForm" layout="ResponsiveGridLayout" columnsL="2" columnsXL="2" columnsM="2" editable="true">
+                    <F:content>
+                        <Label id="id1200PrintTypeBillingDocumentLabel" text="Print Type"></Label>
+                        <RadioButtonGroup select="on1200BillingDocumentFormsRadioButtonGroupSelect" columns="3" id="id1200BillingDocumentFormsRadioButtonGroup">
+                            <RadioButton id="id1200BillingDocumentFormsMultipleRadioButton" text="Multiple"></RadioButton>
+                            <RadioButton id="id1200BillingDocumentFormsFromToRadioButton" text="From - TO"></RadioButton>
+                        </RadioButtonGroup>
+                        <Label visible="false" id="id1200BillingDocumentLabel" text="Billing Document No."></Label>
+                        <Input visible="false" showValueHelp="true" valueHelpRequest="on1200sBillingDocumentValueHelpRequest" placeholder="From Billing Document" id="id1200FromBillingDocumentInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="id1200FromBillingDocumentInputsCustomData" key="1200FromBillingDocument" />
+                            </customData>
+                        </Input>
+                        <Input visible="false" placeholder="To Billing Document" valueHelpRequest="on1200sBillingDocumentValueHelpRequest" showValueHelp="true" id="id1200TOBillingDocumentInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="id1200TOBillingDocumentInputsCustomData" key="1200TOBillingDocument" />
+                            </customData>
+                        </Input>
+                        <Label id="id1200BillingDocumentMultiLabel" text="Billing Document No."></Label>
+                        <MultiInput width="50%" valueHelpRequest="on1200sBillingDocumentValueHelpRequest" placeholder="Enter Billing Document" id="id1200BillingDocumentMultiInput" maxLength="10">
+                            <customData>
+                                <C:CustomData id="id1200BillingDocumentMultiInputsCustomData" key="1200BillingDocumentMultiInput" />
+                            </customData>
+                        </MultiInput>
+                        <Label id="id1200BillingDocumentDateLabel" text="Billing Document Date"></Label>
+                        <DatePicker displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="From Billing Document Date" id="id1200FromBillingDocumentDatePicker"></DatePicker>
+                        <DatePicker displayFormat="dd-MM-yyyy" valueFormat="yyyy-MM-dd" placeholder="To Billing Document Date" id="id1200TOBillingDocumentDatePicker"></DatePicker>
+                                                
+                        <Label id="id1200BillingDocumentCustomerCodeLabel" text="Billing Document Customer Code"></Label>
+                        <Input width="50%" id="id1200BillingDocumentCustomerCodeInput" />
+                        <Label visible="false" id="id1200BillingDocumentHasteLabel" text="Billing Document Haste"></Label>
+                        <Input visible="false" width="50%" id="id1200BillingDocumentHasteInput" />
+                        <Label visible="false" id="id1200BillingDocumentExternalAgentLabel" text="Billing Document External Agent"></Label>
+                        <Input visible="false" width="50%" id="id1200BillingDocumentExternalAgentInput" />
+                        <Label visible="false" id="id1200sSecondRadioButtonGroup"/>
+                        <RadioButtonGroup visible="false" columns="6" id="id1200sRadioButtonGroup">
+                            <RadioButton id="id1200BillingDocumentFormsOriginalRadioButton" text="Original"></RadioButton>
+                            <RadioButton id="id1200BillingDocumentFormsOfficeCopyRadioButton" text="Office Copy"></RadioButton>
+                            <RadioButton id="id1200BillingDocumentFormsTransporterCopyRadioButton" text="Transporter Copy"></RadioButton>
+                            <RadioButton id="id1200BillingDocumentExtraCopyFormsRadioButton" text="Extra Copy"></RadioButton>
+                        </RadioButtonGroup>
+                                         
+                        <C:Title id="id1200ThirdPages3Title"/>                        
+                    </F:content>
+                </F:SimpleForm>
+
+
+                <TableSelectDialog id="idSalesOrderTableSelectDialog" noDataText="No Sales Order Found" title="Select Sales Order" search="onSoSelectDialogSearch" confirm="onSOSelectDialogConfirm" items="{ path : '/SalesOrderF4' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{SalesOrder}" />
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Sales Order" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+
+
+                <TableSelectDialog id="idDeliveryTableSelectDialog" noDataText="No Billing Document Found" title="Select Billing Document" search="onDeliverySelectDialogSearch" confirm="onDeliverySelectDialogConfirm" items="{ path : '/BillingDocumentF4' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{BillingDocument}" />
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Billing Document" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+
+                <TableSelectDialog id="idBillingDocumentTableSelectDialog" noDataText="No Billing Document Found" title="Select Billing Document" search="onBillingDocumentSelectDialogSearch" confirm="onBillingDocumentSelectDialogConfirm" items="{ path : '/BillingDocumentF4' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{BillingDocument}" />
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Billing Document" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+                
+                <TableSelectDialog id="id1200sBillingDocumentTableSelectDialog" noDataText="No Billing Document Found" title="Select Billing Document" search="on1200sBillingDocumentSelectDialogSearch" confirm="on1200sBillingDocumentSelectDialogConfirm" items="{ path : '/BillingDocumentF4_1200' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{BillingDocument}" />
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Billing Document" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+
+
+                <TableSelectDialog id="idBillingDocumentExternalAgentTableSelectDialog" noDataText="No External Agent Found" title="Select External Agent" search="onBillingDocumentExternalAgentSelectDialogSearch" confirm="onBillingDocumentExternalAgentSelectDialogConfirm" items="{ path : '/DeliveryExternalAgent' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Supplier}" />
+                            <Text text="{SupplierName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Supplier" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="SupplierName" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+                <TableSelectDialog id="idBillingDocumentHasteTableSelectDialog" noDataText="No Haste Found" title="Select Haste" search="onBillingDocumentHasteSelectDialogSearch" confirm="onBillingDocumentHasteSelectDialogConfirm" items="{ path : '/DeliveryHaste' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+                <TableSelectDialog id="idBillingDocumentCustomerCodeTableSelectDialog" noDataText="No Customer Code Found" title="Select Customer Code" search="onDeliveryCustomerCodeSelectDialogSearch" confirm="onBillingDocumentCustomerCodeSelectDialogConfirm" items="{ path : '/DeliveryHaste' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+
+                <SelectDialog contentWidth="50%"  id="idBillingDocumentExternalAgentSelectDialog" noDataText="No External Agent Found" title="Select External Agent" search=".onBillingDocumentExternalAgentSelectDialogSearch" confirm=".onBillingDocumentExternalAgentSelectDialogConfirm" cancel=".onBillingDocumentExternalAgentSelectDialogConfirm" items="{path: '/DeliveryExternalAgent' }">
+                    <StandardListItem id="idBillingDocumentExternalAgentStandardListItem" title="{Supplier}" description="{SupplierName}" type="Active" /> 
+                </SelectDialog>                
+                <SelectDialog contentWidth="50%"  id="idBillingDocumentHasteSelectDialog" noDataText="No Haste Code Found" title="Select Haste Code" search=".onBillingDocumentHasteSelectDialogSearch" confirm=".onBillingDocumentHasteSelectDialogConfirm" cancel=".onBillingDocumentHasteSelectDialogConfirm" items="{path: '/DeliveryHaste' }">
+                    <StandardListItem id="idBillingDocumentHasteStandardListItem" title="{Customer}" description="{CustomerName}" type="Active" /> 
+                </SelectDialog>
+                <SelectDialog contentWidth="50%"  id="idBillingDocumentCustomerCodeSelectDialog" noDataText="No Customer Code Found" title="Select Customer Code" search=".onBillingDocumentCustomerCodeSelectDialogSearch" confirm=".onBillingDocumentCustomerCodeSelectDialogConfirm" cancel=".onBillingDocumentCustomerCodeSelectDialogConfirm" items="{path: '/DeliveryCustomerCode' }">
+                    <StandardListItem id="idBillingDocumentCustomerCodeStandardListItem" title="{Customer}" description="{CustomerName}" type="Active" /> 
+                </SelectDialog>
+
+
+
+
+
+
+
+
+                <TableSelectDialog id="idDeliveryExternalAgentTableSelectDialog" noDataText="No External Agent Found" title="Select External Agent" search="onDeliveryExternalAgentSelectDialogSearch" confirm="onDeliveryExternalAgentSelectDialogConfirm" items="{ path : '/DeliveryExternalAgent' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Supplier}" />
+                            <Text text="{SupplierName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Supplier" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="SupplierName" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+                <TableSelectDialog id="idDeliveryHasteTableSelectDialog" noDataText="No Haste Found" title="Select Haste" search="onDeliveryHasteSelectDialogSearch" confirm="onDeliveryHasteSelectDialogConfirm" items="{ path : '/DeliveryHaste' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+                <TableSelectDialog id="idDeliveryCustomerCodeTableSelectDialog" noDataText="No Customer Code Found" title="Select Customer Code" search="onDeliveryCustomerCodeSelectDialogSearch" confirm="onDeliveryCustomerCodeSelectDialogConfirm" items="{ path : '/DeliveryHaste' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column >
+                            <header>
+                                <Text text="Customer" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="Customer Name" />
+                            </header>
+                        </Column>
+                        <Column >
+                            <header>
+                                <Text text="City Name" />
+                            </header>
+                        </Column>
+                    </columns>
+                </TableSelectDialog>
+                
+                <SelectDialog contentWidth="50%"  id="idDeliveryExternalAgentSelectDialog" noDataText="No External Agent Found" title="Select External Agent" search=".onDeliveryExternalAgentSelectDialogSearch" confirm=".onDeliveryExternalAgentSelectDialogConfirm" cancel=".onDeliveryExternalAgentSelectDialogConfirm" items="{path: '/DeliveryExternalAgent' }">
+                    <StandardListItem id="idDeliveryExternalAgentStandardListItem" title="{Supplier}" description="{SupplierName}" type="Active" /> 
+                </SelectDialog>                
+                <SelectDialog contentWidth="50%"  id="idDeliveryHasteSelectDialog" noDataText="No Sale Order Found" title="Select Customer Code" search=".onDeliveryHasteSelectDialogSearch" confirm=".onDeliveryHasteSelectDialogConfirm" cancel=".onDeliveryHasteSelectDialogConfirm" items="{path: '/DeliveryHaste' }">
+                    <StandardListItem id="idDeliveryHasteStandardListItem" title="{Customer}" description="{CustomerName}" type="Active" /> 
+                </SelectDialog>
+                <SelectDialog contentWidth="50%"  id="idDeliveryCustomerCodeSelectDialog" noDataText="No Sale Order Found" title="Select Customer Code" search=".onDeliveryCustomerCodeSelectDialogSearch" confirm=".onDeliveryCustomerCodeSelectDialogConfirm" cancel=".onDeliveryCustomerCodeSelectDialogConfirm" items="{path: '/DeliveryCustomerCode' }">
+                    <StandardListItem id="idDeliveryCustomerCodeStandardListItem" title="{Customer}" description="{CustomerName}" type="Active" /> 
+                </SelectDialog>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <TableSelectDialog id="idSalesReturnBillingDocumentExternalAgentTableSelectDialog" noDataText="No External Agent Found" title="Select External Agent" 
+                search="onSalesReturnBillingDocumentExternalAgentSelectDialogSearch" confirm="onSalesReturnBillingDocumentExternalAgentSelectDialogConfirm" items="{ path : '/DeliveryExternalAgent' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Supplier}" />
+                            <Text text="{SupplierName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column ><header><Text text="Supplier" /></header></Column>
+                        <Column ><header><Text text="SupplierName" /></header></Column>
+                        <Column ><header><Text text="City Name" /></header></Column>
+                    </columns>
+                </TableSelectDialog>
+
+                <TableSelectDialog id="idSalesReturnBillingDocumentHasteTableSelectDialog" noDataText="No Haste Found" title="Select Haste" 
+                search="onSalesReturnBillingDocumentHasteSelectDialogSearch" confirm="onSalesReturnBillingDocumentHasteSelectDialogConfirm" items="{ path : '/DeliveryHaste' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column ><header><Text text="Customer" /></header></Column>
+                        <Column ><header><Text text="Customer Name" /></header></Column>
+                        <Column ><header><Text text="City Name" /></header></Column>
+                    </columns>
+                </TableSelectDialog>
+
+                <TableSelectDialog id="idSalesReturnBillingDocumentCustomerCodeTableSelectDialog" noDataText="No Customer Code Found" title="Select Customer Code" 
+                search="onSalesReturnBillingDocumentCustomerCodeSelectDialogSearch" confirm="onSalesReturnBillingDocumentCustomerCodeSelectDialogConfirm" items="{ path:'/DeliveryHaste' }">
+                    <ColumnListItem >
+                        <cells>
+                            <Text text="{Customer}" />
+                            <Text text="{CustomerName}" />
+                            <Text text="{CityName}" />
+                        </cells>
+                    </ColumnListItem>
+                    <columns>
+                        <Column ><header><Text text="Customer" /></header></Column>
+                        <Column ><header><Text text="Customer Name" /></header></Column>
+                        <Column ><header><Text text="City Name" /></header></Column>
+                    </columns>
+                </TableSelectDialog>
+
+            </content>
+            <footer>
+                <Bar id="idThirdPagesBar">
+                    <contentRight>
+                        <Button id="idBackforThirdPagesButton" icon="sap-icon://media-rewind" type="Emphasized" text="Back" press="onBackButtonforThirdPagePress"/>
+                        <Button id="idPrintButton" icon="sap-icon://print" type="Emphasized" text="Print" press="onPrintButtonPress"/>
+                    </contentRight>
+                </Bar>
+            </footer>
+        </Page>
+    </NavContainer>
+</mvc:View>

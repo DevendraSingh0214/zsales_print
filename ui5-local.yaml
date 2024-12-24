@@ -1,0 +1,39 @@
+specVersion: "3.1"
+metadata:
+  name: zsalesprint
+type: application
+framework:
+  name: SAPUI5
+  version: 1.127.0
+  libraries:
+    - name: sap.m
+    - name: sap.ui.core
+    - name: sap.f
+    - name: sap.suite.ui.generic.template
+    - name: sap.ui.comp
+    - name: sap.ui.generic.app
+    - name: sap.ui.table
+    - name: sap.ushell
+    - name: themelib_sap_horizon
+server:
+  customMiddleware:
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        backend:
+          - path: /sap
+            url: https://my410957-api.s4hana.cloud.sap
+            destination: MY410957
+            authenticationType: SAMLAssertion
+    - name: fiori-tools-preview
+      afterMiddleware: fiori-tools-appreload
+      configuration:
+        component: zsalesprint
+        ui5Theme: sap_horizon

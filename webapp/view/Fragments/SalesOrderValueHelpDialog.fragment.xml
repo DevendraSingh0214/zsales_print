@@ -1,0 +1,5 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<SelectDialog contentWidth="50%"  id="idSalesOrderSelectDialog" noDataText="No Sale Order Found" title="Select Sale Order" search=".onSoSelectDialogSearch" confirm=".onSOSelectDialogConfirm" cancel=".onSOSelectDialogConfirm" items="{path: '/SalesOrderF4' }">
+		<StandardListItem id="idSalesOrderStandardListItem" title="{Customer}" description="{CustomerName}" info="{SalesOrder}" type="Active" /> 
+	</SelectDialog>
+</core:FragmentDefinition>

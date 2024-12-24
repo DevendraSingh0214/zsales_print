@@ -1,0 +1,7 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog contentWidth="50%"  id="idSalesReturnBillingDocumentSelectDialog" noDataText="No Deliveries Found" title="Select Billing Document" search=".onSalesReturnBillingDocumentSelectDialogSearch" confirm=".onSalesReturnBillingDocumentSelectDialogConfirm" cancel=".onSalesReturnBillingDocumentSelectDialogConfirm" items="{path: '/BillingDocumentF4' }">
+		<StandardListItem id="idSalesReturnBillingDocumentStandardListItem" title="{Customer}" description="{CustomerName}" info="{BillingDocument}" type="Active" /> 
+	</SelectDialog>
+</core:FragmentDefinition>
